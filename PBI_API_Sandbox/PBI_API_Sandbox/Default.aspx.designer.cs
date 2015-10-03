@@ -40,13 +40,13 @@ namespace PBI_API_Sandbox {
         protected global::System.Web.UI.WebControls.Label UserLabel;
         
         /// <summary>
-        /// AccessToken control.
+        /// AccessTokenTextbox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label AccessToken;
+        protected global::System.Web.UI.WebControls.Label AccessTokenTextbox;
         
         /// <summary>
         /// GetDataSetsButton control.

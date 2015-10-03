@@ -29,8 +29,10 @@ namespace PBI_API_Sandbox
                 SignInPanel.Visible = false;
 
                 //Set user and token from authentication result
-                UserLabel.Text = authResult.UserInfo.DisplayableId;
+                AccessTokenTextbox.Text = authResult.UserInfo.DisplayableId;
                 //AccessToken.Text = authResult.AccessToken;
+                //RegisterPowerBIFrameJavaScript();
+                //PowerBIFrame.Attributes.Add("onload", "postActionLoadTile();");
 
             }
             else
@@ -43,6 +45,7 @@ namespace PBI_API_Sandbox
         {
             responseContent = string.Empty;
             TilesDropdown.Items.Clear();
+            TilesDropdown.Items.Add(new ListItem("Please Select...", ""));
 
             //The resource Uri to the Power BI REST API resource
             string tilesUri = "https://api.powerbi.com/beta/myorg/dashboards/" + dashboardID + "/tiles";
@@ -68,7 +71,7 @@ namespace PBI_API_Sandbox
 
                     foreach (tile t in tiles.value)
                     {
-                        TilesDropdown.Items.Add(new ListItem(t.Title, t.Id));
+                        TilesDropdown.Items.Add(new ListItem(t.Title, t.EmbedUrl));
                         ResultsTextBox.Text += String.Format("{0}\t{1}\n", t.Id, t.Title);
                     }
                 }
@@ -148,6 +151,7 @@ namespace PBI_API_Sandbox
         {
             responseContent = string.Empty;
             DashboardsDropdown.Items.Clear();
+            //DashboardsDropdown.Items.Add(new ListItem("Please Select...", ""));
 
             //The resource Uri to the Power BI REST API resource
             string dashboardsUri = "https://api.powerbi.com/beta/myorg/dashboards";
@@ -205,8 +209,14 @@ namespace PBI_API_Sandbox
             responseContent = string.Empty;
 
             //The resource Uri to the Power BI REST API resource
-            string dashboardsUri = "https://api.powerbi.com/beta/myorg/dashboards/" + selectedDashboardId +"/Tiles/" + selectedTileId;
-
+            string dashboardsUri = "https://api.powerbi.com/beta/myorg/dashboards/"
+                + selectedDashboardId
+                + "/Tiles/"
+                + selectedTileId;
+                //+ "&width=400" not supported
+                //+ "&height=400"; not supported
+            
+            
             //Configure datasets request
             System.Net.WebRequest request = System.Net.WebRequest.Create(dashboardsUri) as System.Net.HttpWebRequest;
             request.Method = "GET";
@@ -229,6 +239,33 @@ namespace PBI_API_Sandbox
                     PowerBIFrame.Src = t.EmbedUrl;
                 }
             }
+        }
+
+        protected void RegisterPowerBIFrameJavaScript()
+        {
+            // Create a JSON object to post to the iframe once it's loaded0
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            PowerBIOnLoadMessage message = new PowerBIOnLoadMessage();
+
+            message.accessToken = authResult.AccessToken;
+            message.action = "loadTile";
+            message.width = "400";
+            message.height = "400";
+
+            string jsonMessage = json.Serialize(message);
+
+            Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "registerSomething",
+                "function postActionLoadTile(){\n" +
+                "\t$(function() {\n" +
+                "\t\t$( \"#PowerBIFrame\" ).load(function() {\n" +
+                "\t\t\tvar message = " + jsonMessage + "\n" +
+                "\t\t\tiframe = document.getElementById('PowerBIFrame');\n" +
+                "\t\t\tiframe.contentWindow.postMessage(message, \"*\");\n" +
+                "\t\t})\n" +
+                "\t});\n" +
+                "}"
+                , true);
+
         }
     } // End Class
 
@@ -267,5 +304,13 @@ namespace PBI_API_Sandbox
         public string Id { get; set; }
         public string Title { get; set; }
         public string EmbedUrl { get; set; }
+    }
+
+    public class PowerBIOnLoadMessage
+    {
+        public string action { get; set; }
+        public string accessToken { get; set; }
+        public string height { get; set; }
+        public string width { get; set; }
     }
 }
