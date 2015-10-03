@@ -1,0 +1,13 @@
+﻿body {
+    font-family: 'Segoe UI'
+}
+
+.titleBold {
+    font-weight: bold;
+}
+
+#PowerBIFrame {
+    height: 400px;
+    width: 400px;
+    border: 5px dashed gray;
+}

@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PBI_API_Sandbox.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RedirectUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://pbiapisandbox.azurewebsites.net/Redirect.aspx</Value>
+    </Setting>
+    <Setting Name="ClientID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">d5757c3d-32b5-419c-b770-3d81560005a8</Value>
+    </Setting>
+    <Setting Name="ClientSecretKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">DhdvCmdafr7yr8MoHVhknEZreFEezH5WkfXmn33nZRE=</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

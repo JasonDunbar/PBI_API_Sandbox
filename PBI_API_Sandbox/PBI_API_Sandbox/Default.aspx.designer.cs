@@ -49,6 +49,60 @@ namespace PBI_API_Sandbox {
         protected global::System.Web.UI.WebControls.Label AccessToken;
         
         /// <summary>
+        /// GetDataSetsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GetDataSetsButton;
+        
+        /// <summary>
+        /// GetDashboardsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GetDashboardsButton;
+        
+        /// <summary>
+        /// DashboardsDropdown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DashboardsDropdown;
+        
+        /// <summary>
+        /// TilesDropdown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList TilesDropdown;
+        
+        /// <summary>
+        /// ResultsTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ResultsTextBox;
+        
+        /// <summary>
+        /// PowerBIFrame control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlIframe PowerBIFrame;
+        
+        /// <summary>
         /// SignInPanel control.
         /// </summary>
         /// <remarks>
