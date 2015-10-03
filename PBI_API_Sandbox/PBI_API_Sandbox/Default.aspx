@@ -7,108 +7,12 @@
     <title>Power BI Web App</title>
     <link type="text/css" rel="stylesheet" href="./css/default.css" />
     <script type="text/javascript">
-
         window.onload = function () {
-            var width = 500;
-            var height = 500;
-
-            // client side click to embed a selected tile.
-            var dropdown = document.getElementById("TilesDropdown");
-            if (dropdown.addEventListener) {
-                dropdown.addEventListener("click", updateEmbedTile, false);
-            }
-            else {
-                dropdown.attachEvent('onclick', updateEmbedTile);
-            }
-
-            //How to navigate from a Power BI Tile to the dashboard
-            // listen for message to receive tile click messages.
-            if (window.addEventListener) {
-                window.addEventListener("message", receiveMessage, false);
-            } else {
-                window.attachEvent("onmessage", receiveMessage);
-            }
-
-            //How to handle server side post backs
-            // handle server side post backs, optimize for reload scenarios
-            // show embedded tile if all fields were filled in.
-            var accessTokenElement = document.getElementById('AccessTokenTextbox');
-            if(null !== accessTokenElement){
-                var accessToken = accessTokenElement.value;
-                if ("" !== accessToken)
-                    updateEmbedTile();
-            }
-        };
-
-        //How to navigate from a Power BI Tile to the dashboard
-        // The embedded tile posts message for click to parent window.  
-        // Listen and handle as appropriate
-        // The sample shows how to open the tile source.
-        function receiveMessage(event)
-        {
-            if (event.data) {
-                try {
-                    messageData = JSON.parse(event.data);
-                    if (messageData.event === "tileClicked")
-                    {
-                        //Get IFrame source and construct dashboard url
-                        iFrameSrc = document.getElementById(event.srcElement.iframe.id).src;
-
-                        //Split IFrame source to get dashboard id
-                        var dashboardId = iFrameSrc.split("dashboardId=")[1].split("&")[0];
-
-                        //Get PowerBI service url
-                        urlVal = iFrameSrc.split("/embed")[0] + "/dashboards/{0}";
-                        urlVal = urlVal.replace("{0}", dashboardId);
-
-                        window.open(urlVal);
-                    }
-                }
-                catch (e) {
-                    // In a production app, handle exception
-                }
-            }
+            // put code to run here
         }
-
-        // update embed tile
-        function updateEmbedTile() {
-            // check if the embed url was selected
-            var embedTileUrl = document.getElementById('tb_EmbedURL').value;
-            if ("" === embedTileUrl)
-                return;
-
-            // to load a tile do the following:
-            // 1: set the url, include size.
-            // 2: add a onload handler to submit the auth token
-            iframe = document.getElementById('iFrameEmbedTile');
-            iframe.src =  embedTileUrl + "&width=" + width + "&height=" + height;
-            iframe.onload = postActionLoadTile;
-        }
-
-        
-        // post the auth token to the iFrame. 
-        function postActionLoadTile() {
-            // get the access token.
-            accessToken = document.getElementById('AccessTokenTextbox').value;
-
-            // return if no a
-            if ("" === accessToken)
-                return;
-
-            var h = height;
-            var w = width; 
-
-            // construct the push message structure
-            var m = { action: "loadTile", accessToken: accessToken, height: h, width: w};
-            message = JSON.stringify(m);
-
-            // push the message.
-            iframe = document.getElementById('PowerBIFrame');
-            iframe.contentWindow.postMessage(message, "*");;
-        }
-
     </script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="./scripts/App.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -118,10 +22,10 @@
             
             <h1>The Power BI API Sandbox</h1>
             <p>If you're seeing this, then you're authenticated against the CTP Power BI Service (linked to the ctp2.onmicrosoft.com tenant)</p>
-
             <span class="titleBold">The curent user: </span><asp:Label ID="UserLabel" runat="server" /><br />
-            <asp:Label ID="AccessTokenTextbox" runat="server" /><br /> -->
+            <asp:Label ID="AccessTokenTextbox" runat="server" />
             <br /><br />
+
             <h2>User Guide</h2>
             <ol>
                 <li>Hitting the 'Get Dashboards' button will fill the Dashboards dropdown with the dashboards that you have access to in Power BI</li>
