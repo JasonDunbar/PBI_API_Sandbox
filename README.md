@@ -8,6 +8,7 @@ There's a great [Example App](https://github.com/PowerBI/Integrate-a-tile-into-a
 - Where as the Web App provided by Microsoft relies on the click of a button to show a Tile, i've made it all dynamic with cascading dropdowns and an auto-refreshing iframe, determined by the tile that's selected.
 - I've placed a TextBox on the page to show the JSON that is returned from the API calls
 - User guidance! Partly the idea of this was to demonstrate the capabilities to lesser technical people in order to better explain concepts and sell benefits.
+- I've put the javascript into a namespace and I'm using jQuery to make the javascript a little more readable
 
 ### Usage
 Feel free to grab it and try it out. Though there's quite some setup before you do that:
