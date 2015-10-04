@@ -13,15 +13,6 @@ namespace PBI_API_Sandbox {
     public partial class Default {
         
         /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
         /// PowerBIPanel control.
         /// </summary>
         /// <remarks>
@@ -58,15 +49,6 @@ namespace PBI_API_Sandbox {
         protected global::System.Web.UI.WebControls.Button GetDataSetsButton;
         
         /// <summary>
-        /// GetDashboardsButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button GetDashboardsButton;
-        
-        /// <summary>
         /// DashboardsDropdown control.
         /// </summary>
         /// <remarks>
@@ -74,6 +56,15 @@ namespace PBI_API_Sandbox {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DashboardsDropdown;
+        
+        /// <summary>
+        /// GetDashboardsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GetDashboardsButton;
         
         /// <summary>
         /// TilesDropdown control.
@@ -92,15 +83,6 @@ namespace PBI_API_Sandbox {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ResultsTextBox;
-        
-        /// <summary>
-        /// PowerBIFrame control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe PowerBIFrame;
         
         /// <summary>
         /// SignInPanel control.

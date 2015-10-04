@@ -29,11 +29,8 @@ namespace PBI_API_Sandbox
                 SignInPanel.Visible = false;
 
                 //Set user and token from authentication result
-                AccessTokenTextbox.Text = authResult.UserInfo.DisplayableId;
-                //AccessToken.Text = authResult.AccessToken;
-                //RegisterPowerBIFrameJavaScript();
-                //PowerBIFrame.Attributes.Add("onload", "postActionLoadTile();");
-
+                UserLabel.Text = authResult.UserInfo.DisplayableId;
+                AccessTokenTextbox.Text = authResult.AccessToken;
             }
             else
             {
@@ -44,6 +41,7 @@ namespace PBI_API_Sandbox
         private void GetDashboardTiles(string dashboardID)
         {
             responseContent = string.Empty;
+            ResultsTextBox.Text = string.Empty;
             TilesDropdown.Items.Clear();
             TilesDropdown.Items.Add(new ListItem("Please Select...", ""));
 
@@ -69,7 +67,7 @@ namespace PBI_API_Sandbox
                     JavaScriptSerializer json = new JavaScriptSerializer();
                     Tiles tiles = (Tiles)json.Deserialize(responseContent, typeof(Tiles));
 
-                    foreach (tile t in tiles.value)
+                    foreach (Tile t in tiles.value)
                     {
                         TilesDropdown.Items.Add(new ListItem(t.Title, t.EmbedUrl));
                         ResultsTextBox.Text += String.Format("{0}\t{1}\n", t.Id, t.Title);
@@ -78,6 +76,7 @@ namespace PBI_API_Sandbox
             }
         }
 
+        // Sign In Button
         protected void SignInButton_Click(object sender, EventArgs e)
         {
             //Create a query string
@@ -111,9 +110,11 @@ namespace PBI_API_Sandbox
             Response.Redirect(String.Format("{0}?{1}", authorityUri, queryString));
         }
 
+        // Get Datasets Button
         protected void GetDataSetsButton_Click(object sender, EventArgs e)
         {
             responseContent = string.Empty;
+            ResultsTextBox.Text = string.Empty;
 
             //The resource Uri to the Power BI REST API resource
             string datasetsUri = "https://api.powerbi.com/v1.0/myorg/datasets";
@@ -137,9 +138,8 @@ namespace PBI_API_Sandbox
                     JavaScriptSerializer json = new JavaScriptSerializer();
                     Datasets datasets = (Datasets)json.Deserialize(responseContent, typeof(Datasets));
 
-                    ResultsTextBox.Text = string.Empty;
                     //Get each Dataset from 
-                    foreach (dataset ds in datasets.value)
+                    foreach (Dataset ds in datasets.value)
                     {
                         ResultsTextBox.Text += String.Format("{0}\t{1}\n", ds.Id, ds.Name);
                     }
@@ -147,9 +147,11 @@ namespace PBI_API_Sandbox
             }
         }
 
+        // Get Dashboards Button
         protected void GetDashboardsButton_Click(object sender, EventArgs e)
         {
             responseContent = string.Empty;
+            ResultsTextBox.Text = string.Empty;
             DashboardsDropdown.Items.Clear();
             //DashboardsDropdown.Items.Add(new ListItem("Please Select...", ""));
 
@@ -175,11 +177,7 @@ namespace PBI_API_Sandbox
                     JavaScriptSerializer json = new JavaScriptSerializer();
                     Dashboards dashboards = (Dashboards)json.Deserialize(responseContent, typeof(Dashboards));
 
-                    ResultsTextBox.Text = string.Empty;
-                    //ResultsTextBox.Text = responseContent;
-                    // Get all of the Dashbaords 
-
-                    foreach (dashboard d in dashboards.value)
+                    foreach (Dashboard d in dashboards.value)
                     {
                         DashboardsDropdown.Items.Add(new ListItem(d.DisplayName, d.Id));
                         ResultsTextBox.Text += String.Format("{0}\t{1}\n", d.Id, d.DisplayName);
@@ -191,6 +189,7 @@ namespace PBI_API_Sandbox
             GetDashboardTiles(DashboardsDropdown.Items[0].Value);
         }
 
+        // Dashboards Dropdown
         protected void DashboardsDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetDashboardTiles(DashboardsDropdown.SelectedValue);
@@ -200,82 +199,14 @@ namespace PBI_API_Sandbox
         {
             GetDashboardTiles(DashboardsDropdown.Items[0].Value);
         }
-
-        protected void TilesDropdown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            String selectedDashboardId = DashboardsDropdown.SelectedValue;
-            String selectedTileId = TilesDropdown.SelectedValue;
-
-            responseContent = string.Empty;
-
-            //The resource Uri to the Power BI REST API resource
-            string dashboardsUri = "https://api.powerbi.com/beta/myorg/dashboards/"
-                + selectedDashboardId
-                + "/Tiles/"
-                + selectedTileId;
-                //+ "&width=400" not supported
-                //+ "&height=400"; not supported
-            
-            
-            //Configure datasets request
-            System.Net.WebRequest request = System.Net.WebRequest.Create(dashboardsUri) as System.Net.HttpWebRequest;
-            request.Method = "GET";
-            request.ContentLength = 0;
-            request.Headers.Add("Authorization", String.Format("Bearer {0}", authResult.AccessToken));
-
-            //Get datasets response from request.GetResponse()
-            using (var response = request.GetResponse() as System.Net.HttpWebResponse)
-            {
-                //Get reader from response stream
-                using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
-                {
-                    responseContent = reader.ReadToEnd();
-                    ResultsTextBox.Text = responseContent;
-
-                    //Deserialize JSON string
-                    //JavaScriptSerializer class is in System.Web.Script.Serialization
-                    JavaScriptSerializer json = new JavaScriptSerializer();
-                    tile t = (tile)json.Deserialize(responseContent, typeof(tile));
-                    PowerBIFrame.Src = t.EmbedUrl;
-                }
-            }
-        }
-
-        protected void RegisterPowerBIFrameJavaScript()
-        {
-            // Create a JSON object to post to the iframe once it's loaded0
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            PowerBIOnLoadMessage message = new PowerBIOnLoadMessage();
-
-            message.accessToken = authResult.AccessToken;
-            message.action = "loadTile";
-            message.width = "400";
-            message.height = "400";
-
-            string jsonMessage = json.Serialize(message);
-
-            Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "registerSomething",
-                "function postActionLoadTile(){\n" +
-                "\t$(function() {\n" +
-                "\t\t$( \"#PowerBIFrame\" ).load(function() {\n" +
-                "\t\t\tvar message = " + jsonMessage + "\n" +
-                "\t\t\tiframe = document.getElementById('PowerBIFrame');\n" +
-                "\t\t\tiframe.contentWindow.postMessage(message, \"*\");\n" +
-                "\t\t})\n" +
-                "\t});\n" +
-                "}"
-                , true);
-
-        }
-    } // End Class
+    }
 
     // Datasets
     public class Datasets
     {
-        public dataset[] value { get; set; }
+        public Dataset[] value { get; set; }
     }
-
-    public class dataset
+    public class Dataset
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -284,10 +215,9 @@ namespace PBI_API_Sandbox
     // Dashboards
     public class Dashboards
     {
-        public dashboard[] value { get; set; }
+        public Dashboard[] value { get; set; }
     }
-
-    public class dashboard
+    public class Dashboard
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }
@@ -296,21 +226,12 @@ namespace PBI_API_Sandbox
     // Tiles
     public class Tiles
     {
-        public tile[] value { get; set; }
+        public Tile[] value { get; set; }
     }
-
-    public class tile
+    public class Tile
     {
         public string Id { get; set; }
         public string Title { get; set; }
         public string EmbedUrl { get; set; }
-    }
-
-    public class PowerBIOnLoadMessage
-    {
-        public string action { get; set; }
-        public string accessToken { get; set; }
-        public string height { get; set; }
-        public string width { get; set; }
     }
 }

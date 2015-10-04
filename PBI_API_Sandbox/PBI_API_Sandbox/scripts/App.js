@@ -1,28 +1,27 @@
-﻿"use strict";
+﻿/// <reference name="MicrosoftAjax.js"/>
+
+"use strict";
 
 Type.registerNamespace("PBI");
 PBI.Functions = PBI.Functions || {};
 
-PBI.Functions = {
-
-}
-
-PBI.Functions.InitialisePage = {
+PBI.EmbedTile = {
+    
     frameHeight: 400,
     frameWidth: 400,
+    TileUrl: "",
 
     registerTileChangeEvent: function() {
 
         // use jQuery to register an event on the dropdown list
-        var dropdown = $("#TilesDropdown");
-        dropdown.on("click", updateEmbedTile)
+        $("#TilesDropdown").on("change", PBI.EmbedTile.updateEmbedTile)
 
         //How to navigate from a Power BI Tile to the dashboard
         // listen for message to receive the tile click messages.
         if (window.addEventListener) {
-            window.addEventListener("message", receiveMessage, false);
+            window.addEventListener("message", PBI.EmbedTile.receiveMessage, false);
         } else {
-            window.attachEvent("onmessage", receiveMessage);
+            window.attachEvent("onmessage", PBI.EmbedTile.receiveMessage);
         }
 
         //How to handle server side post backs
@@ -30,13 +29,14 @@ PBI.Functions.InitialisePage = {
         // show embedded tile if all fields were filled in.
         var accessTokenElement = $('#AccessTokenTextbox');
         if (null !== accessTokenElement) {
-            var accessToken = accessTokenElement.value;
+            var accessToken = accessTokenElement.text();
             if ("" !== accessToken){
-                updateEmbedTile();
+                PBI.EmbedTile.updateEmbedTile();
             }
         }
     },
 
+    // Event Handler
     //How to navigate from a Power BI Tile to the dashboard
     // The embedded tile posts message to the parent window on click.
     // Listen and handle as appropriate
@@ -44,19 +44,19 @@ PBI.Functions.InitialisePage = {
     receiveMessage: function(event){
         if (event.data) {
             try {
-                messageData = JSON.parse(event.data);
+                var messageData = JSON.parse(event.data);
                 if (messageData.event === "tileClicked") {
                     //Get IFrame source and construct dashboard url
-                    iFrameSrc = document.getElementById(event.srcElement.iframe.id).src;
+                    var iFrameSrc = $("#PowerBIFrame").attr("src");
 
                     //Split IFrame source to get dashboard id
                     var dashboardId = iFrameSrc.split("dashboardId=")[1].split("&")[0];
 
                     //Get PowerBI service url
-                    urlVal = iFrameSrc.split("/embed")[0] + "/dashboards/{0}";
-                    urlVal = urlVal.replace("{0}", dashboardId);
+                    var dashboardUrl = iFrameSrc.split("/embed")[0] + "/dashboards/{0}";
+                    dashboardUrl = dashboardUrl.replace("{0}", dashboardId);
 
-                    window.open(urlVal);
+                    window.open(dashboardUrl);
                 }
             }
             catch (e) {
@@ -65,39 +65,42 @@ PBI.Functions.InitialisePage = {
         }
     },
 
+    // Event Handler
     // Update the embedded tile
     updateEmbedTile: function(){
         // check if the embed url was selected
-        var embedTileUrl = document.getElementById('tb_EmbedURL').value;
-        if ("" === embedTileUrl)
+        PBI.EmbedTile.TileUrl = $("#TilesDropdown option:selected").attr("value");
+
+        // if no option has been selected yet, don't proceed to update the iframe
+        if (undefined === PBI.EmbedTile.TileUrl || "" === PBI.EmbedTile.TileUrl) {
             return;
+        }
 
         // to load a tile do the following:
         // 1: set the url, include size.
         // 2: add a onload handler to submit the auth token
-        iframe = document.getElementById('iFrameEmbedTile');
-        iframe.src = embedTileUrl + "&width=" + width + "&height=" + height;
-        iframe.onload = postActionLoadTile;
+        var iframe = $('#PowerBIFrame');
+        iframe.attr("src", PBI.EmbedTile.TileUrl + "&width=" + PBI.EmbedTile.frameWidth + "&height=" + PBI.EmbedTile.frameHeight);
+        iframe.on("load", PBI.EmbedTile.postActionLoadTile);
     },
 
+    // iframe onload Event Handler
     // Post the auth token to the iframe
     postActionLoadTile: function () {
         // get the access token.
-        accessToken = document.getElementById('AccessTokenTextbox').value;
+        var accessToken = $('#AccessTokenTextbox').text();
 
         // return if no a
-        if ("" === accessToken)
+        if ("" === accessToken) {
             return;
-
-        var h = height;
-        var w = width;
+        }
 
         // construct the push message structure
-        var m = { action: "loadTile", accessToken: accessToken, height: h, width: w };
-        message = JSON.stringify(m);
+        var m = { action: "loadTile", accessToken: accessToken, height: PBI.EmbedTile.frameHeight, width: PBI.EmbedTile.frameWidth };
+        var message = JSON.stringify(m);
 
         // push the message.
-        iframe = document.getElementById('PowerBIFrame');
+        var iframe = document.getElementById('PowerBIFrame');
         iframe.contentWindow.postMessage(message, "*");
     }
 }
