@@ -1,0 +1,24 @@
+{
+  "name": "pbi_api_sanbox",
+  "description": "connect to microsoft power bi using backbone js",
+  "main": "main.js",
+  "authors": [
+    "Luca Mele",
+    "Jason Dunbar"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://github.com/JasonDunbar/PBI_API_Sandbox",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.2.3"
+  }
+}

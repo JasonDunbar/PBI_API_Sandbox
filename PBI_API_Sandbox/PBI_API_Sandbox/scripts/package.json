@@ -16,6 +16,7 @@
     "url": "https://github.com/JasonDunbar/PBI_API_Sandbox/issues"
   },
   "dependencies": {
-    "gulp": "~3.9.0"
+    "gulp": "~3.9.0",
+    "requirejs": "~2.1.20"
   }
 }
