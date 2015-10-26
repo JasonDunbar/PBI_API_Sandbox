@@ -1,0 +1,21 @@
+{
+  "name": "pbi_api_sanbox",
+  "version": "0.0.1",
+  "description": "connect to microsoft power bi using backbone js",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasonDunbar/PBI_API_Sandbox.git"
+  },
+  "author": "Luca Mele, Jason Dunbar",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/JasonDunbar/PBI_API_Sandbox/issues"
+  },
+  "dependencies": {
+    "gulp": "~3.9.0"
+  }
+}
