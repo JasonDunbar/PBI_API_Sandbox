@@ -8,6 +8,7 @@ require(['app'], function(App) {
             'modules/router',
             // all modules
             'modules/login/index',
+            'modules/dashboard/index'
         ], function() {
             App.start();
         });

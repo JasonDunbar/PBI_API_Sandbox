@@ -23,6 +23,7 @@
     "requirejs": "~2.1.20",
     "jquery": "~2.1.4",
     "backbone.marionette": "marionette#~2.4.3",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "foundation": "~5.5.3"
   }
 }

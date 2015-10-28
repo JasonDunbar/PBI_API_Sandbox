@@ -8,14 +8,20 @@ require.config({
     paths : {
         backbone: 'bower_components/backbone/backbone',
         app: 'modules/app',
+        foundation: 'bower_components/foundation/js/foundation',
         jquery: 'bower_components/jquery/dist/jquery',
         underscore: 'bower_components/underscore/underscore',
+        adal: 'bower_components/adal-angular/lib/adal',
         marionette: 'bower_components/backbone.marionette/lib/backbone.marionette',
     },
     shim : {
         Backbone: {
             deps: ['underscore'],
             exports: 'backbone'
+        },
+        Foundation: {
+            deps: ['jquery'],
+            exports: 'foundation'
         },
         Marionette: {
             deps: ['backbone', 'underscore', 'jquery'],

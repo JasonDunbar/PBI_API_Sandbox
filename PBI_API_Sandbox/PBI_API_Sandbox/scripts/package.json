@@ -20,6 +20,12 @@
     "requirejs": "~2.1.20",
     "gulp-template-compile": "~1.1.0",
     "gulp-concat": "~2.6.0",
-    "gulp-clean": "~0.3.1"
+    "gulp-clean": "~0.3.1",
+    "hapi": "~11.0.2",
+    "request": "~2.65.0",
+    "http": "0.0.0",
+    "cors": "~2.7.1",
+    "express": "~4.13.3",
+    "body-parser": "~1.14.1"
   }
 }

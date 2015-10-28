@@ -1,5 +1,5 @@
 define(['marionette', 'templates/templates', 'backbone','jquery', 'underscore'],
-    function (Marionette, templates) {
+    function (Marionette, templates, Backbone) {
 
         'use strict';
 
